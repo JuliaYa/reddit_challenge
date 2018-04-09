@@ -1,14 +1,15 @@
-function cipher(secret, message){
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-  const alphabetLength = alphabet.length;
-  const table = {};
-
-
+function Cipher(){
+  this.alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  this.table = {};
+  const alphabetLength = this.alphabet.length;
+  
   for(var i = 0; i < alphabetLength; i++){
-    var letter = alphabet[i];
-    table[letter] = alphabet.substr(i) + alphabet.substr(0, i);
+    var letter = this.alphabet[i];
+    this.table[letter] = this.alphabet.substr(i) + this.alphabet.substr(0, i);
   }
+};
 
+Cipher.prototype.encrypt = function(secret, message){
   var messageLength = message.length;
   var fullRepeats = Math.floor(messageLength / secret.length);
   var rest = messageLength % secret.length;
@@ -18,10 +19,14 @@ function cipher(secret, message){
   for(var i = 0; i < messageLength; i++){
     var letterSecret = secretKey[i];
     var letterMessage = message[i];
-    var secretInd = alphabet.indexOf(letterSecret);
-    cipheredMessage += table[letterMessage][secretInd];
+    var secretInd = this.alphabet.indexOf(letterSecret);
+    cipheredMessage += this.table[letterMessage][secretInd];
   }
   return cipheredMessage;
+};
+
+Cipher.prototype.decript = function(){
+
 }
 
-module.exports = cipher;
+module.exports = Cipher;

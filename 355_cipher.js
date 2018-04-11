@@ -10,19 +10,18 @@ function Cipher(){
 };
 
 Cipher.prototype.encrypt = function(secret, message){
-  var messageLength = message.length;
-  var fullRepeats = Math.floor(messageLength / secret.length);
-  var rest = messageLength % secret.length;
-  var secretKey = secret.repeat(fullRepeats) + secret.substr(0, rest);
+  const messageLength = message.length;
+  const fullRepeats = Math.floor(messageLength / secret.length);
+  const rest = messageLength % secret.length;
+  this.secretKey = secret.repeat(fullRepeats) + secret.substr(0, rest);
+  var self = this;
 
-  var cipheredMessage = '';
-  for(var i = 0; i < messageLength; i++){
-    var letterSecret = secretKey[i];
-    var letterMessage = message[i];
-    var secretInd = this.alphabet.indexOf(letterSecret);
-    cipheredMessage += this.table[letterMessage][secretInd];
-  }
-  return cipheredMessage;
+  return message.split('').reduce(function (result, letter, index){
+    result = result ? result : '';
+    const letterSecret = self.secretKey[index];
+    const secretInd = self.alphabet.indexOf(letterSecret);
+    return result + self.table[letter][secretInd];
+  }, 0);
 };
 
 Cipher.prototype.decript = function(){
